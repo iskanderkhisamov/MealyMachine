@@ -36,8 +36,7 @@ catch (NotSupportedException e)
     Console.WriteLine($"\n\n{e.Message}");
 }
 
-Console.WriteLine($"\nСтатистика");
-Console.WriteLine(count);
+Console.WriteLine($"\nСтатистика: всего смен состояний");
 foreach (var keyValuePair in stats)
 {
     float proc = (int)Math.Round((double)(100 * keyValuePair.Value) / count);

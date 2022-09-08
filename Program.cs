@@ -4,8 +4,7 @@
     (State.открыта, Input.Закрыть) => State.закрыта,
     (State.закрыта, Input.Запереть) => State.заперта,
     (State.заперта, Input.Отпереть) => State.закрыта,
-    _ => throw new NotSupportedException(
-        $"Состояние {current} не имеет перехода {input}")
+    _ => current
 };
 
 var inputValues = Enum.GetValues(typeof(Input));
@@ -19,22 +18,17 @@ var current = randomState;
 var count = 1;
 var stats = stateValues.Cast<object?>().ToDictionary(stateValue => stateValue.ToString(), inputValue => 0);
 
-try
+
+while (count < 11)
 {
-    while (true)
-    {
-        var randomInput = (Input)inputValues.GetValue(random.Next(inputValues.Length));
-        stats[current.ToString()]++;
-        Console.Write($"ИТЕРАЦИЯ: {count}; ВХОДНОЙ СИГНАЛ: {randomInput} дверь; ТЕКУЩЕЕ СОСТОЯНИЕ: дверь {current}; ");
-        current = ChangeState(current, randomInput);
-        Console.WriteLine($"ВЫХОДНОЙ СИГНАЛ: дверь {current}");
-        count++;
-    }
+    var randomInput = (Input)inputValues.GetValue(random.Next(inputValues.Length));
+    stats[current.ToString()]++;
+    Console.Write($"ИТЕРАЦИЯ: {count}; ВХОДНОЙ СИГНАЛ: {randomInput} дверь; ТЕКУЩЕЕ СОСТОЯНИЕ: дверь {current}; ");
+    current = ChangeState(current, randomInput);
+    Console.WriteLine($"ВЫХОДНОЙ СИГНАЛ: дверь {current}");
+    count++;
 }
-catch (NotSupportedException e)
-{
-    Console.WriteLine($"\n\n{e.Message}");
-}
+
 
 Console.WriteLine($"\nСтатистика: всего смен состояний");
 foreach (var keyValuePair in stats)
